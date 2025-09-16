@@ -437,6 +437,28 @@
             font-size: 1.5rem;
         }
 
+        /* Notificación de éxito */
+        .success-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #080a33;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            opacity: 0;
+            transform: translateY(100px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .success-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .dashboard-grid {
@@ -490,6 +512,12 @@
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
+            }
+
+            .success-notification {
+                left: 20px;
+                right: 20px;
+                bottom: 10px;
             }
         }
 
@@ -555,6 +583,8 @@
             </form>
         </div>
     </div>
+
+    <div class="success-notification" id="success-notification"></div>
 
     <div class="container" style="display: none;">
         <header>
@@ -678,6 +708,18 @@
             return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
+        // Función para mostrar notificaciones de éxito
+        function showSuccessNotification(message) {
+            const notification = document.getElementById('success-notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            // Ocultar después de 3 segundos
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
         // Esperar a que cargue la página
         document.addEventListener('DOMContentLoaded', function() {
             // Ocultar preview después de 2 segundos
@@ -782,9 +824,11 @@
 
                     this.reset();
 
-                    alert('Transacción agregada correctamente');
+                    // Mostrar notificación en lugar de alert
+                    showSuccessNotification('Transacción agregada correctamente');
                 } else {
-                    alert('Por favor, completa el campo de monto correctamente');
+                    // Mostrar notificación en lugar de alert
+                    showSuccessNotification('Por favor, completa el campo de monto correctamente');
                 }
             });
 
@@ -811,9 +855,11 @@
 
                     this.reset();
 
-                    alert('Nota guardada correctamente');
+                    // Mostrar notificación en lugar de alert
+                    showSuccessNotification('Nota guardada correctamente');
                 } else {
-                    alert('Por favor, completa todos los campos');
+                    // Mostrar notificación en lugar de alert
+                    showSuccessNotification('Por favor, completa todos los campos');
                 }
             });
 
@@ -973,6 +1019,9 @@
 
                     loadFinancialData();
                     loadTransactions();
+                    
+                    // Mostrar notificación en lugar de alert
+                    showSuccessNotification('Transacción eliminada correctamente');
                 }
             };
 
@@ -983,6 +1032,9 @@
                     localStorage.setItem('notes', JSON.stringify(notes));
 
                     loadNotes();
+                    
+                    // Mostrar notificación en lugar de alert
+                    showSuccessNotification('Nota eliminada correctamente');
                 }
             };
         });
